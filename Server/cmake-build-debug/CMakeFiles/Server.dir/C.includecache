@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mackygero/Documents/WebServerSchemas/Server/headers/server.h
+sys/socket.h
+-
+stdio.h
+-
+arpa/inet.h
+-
+string.h
+-
+
+/home/mackygero/Documents/WebServerSchemas/Server/main.c
+headers/server.h
+/home/mackygero/Documents/WebServerSchemas/Server/headers/server.h
+
+/home/mackygero/Documents/WebServerSchemas/Server/source/server.c
+../headers/server.h
+/home/mackygero/Documents/WebServerSchemas/Server/headers/server.h
+
