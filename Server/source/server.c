@@ -1,125 +1,79 @@
 #include "../headers/server.h"
 
-int RunClient(void)
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+bool CreateSocket(Server *s)
 {
+    // Crea el socket para un servidor.
+    printf("Creando Socket...");
+    s->socketDes = socket(AF_INET, SOCK_STREAM, 0);
 
-    int socket_desc;
-    struct sockaddr_in server;
-    char *message, serverReply[2000];
-
-    //  Crear Socket
-    socket_desc = socket(AF_INET , SOCK_STREAM , 0);
-    if (socket_desc == -1)
-    {
-        printf("No se pudo crear el socket");
+    if (s->socketDes == -1) {
+        printf("FAILED\n");
+        return false;
     }
-
-    server.sin_addr.s_addr = inet_addr("172.217.8.78");
-    server.sin_family = AF_INET;
-    server.sin_port = htons( 80 );
-
-    //Conectarse a un servidor remoto
-    if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0)
-    {
-        puts("Error de conexion");
-        return 1;
-    }
-
-    puts("Conectado");
-
-
-    // Enviar datos
-    message = "GET / HTTP/1.1\r\n\r\n";
-    if (send(socket_desc, message, strlen(message), 0) < 0)
-    {
-        puts("Error enviando datos.");
-        return 1;
-    }
-    puts("Datos enviados.\n");
-
-
-    // Recibiendo respuesta del servidor.
-    if (recv(socket_desc, serverReply, 2000, 0) < 0)
-    {
-        puts("Error recibiendo datos.");
-    }
-    puts("Respuesta recibida\n");
-    puts(serverReply);
-
-    close(socket_desc);
-    return 0;
+    printf("OK\n");
+    return true;
 }
 
-char* getHostByName(char* hostname)
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+bool BindSocket(Server *s)
 {
-
-    char ip[100];
-    struct hostent *he;
-    struct in_addr **addr_list;
-    int i;
-
-    if ((he = gethostbyname(hostname)) == NULL)
-    {
-        herror("gethostbyname");
-        return NULL;
-    }
-
-    for (i = 0; addr_list[i] != NULL; i++)
-    {
-        strcpy(ip, inet_ntoa(*addr_list[i]));
-    }
-
-    printf("%s resolved to : %s", hostname, ip);
-
-    return hostname;
-}
-
-
-int RunServer(void)
-{
-
-    int socket_desc, newSocket, c, *newSock;
-    struct sockaddr_in server, client;
-    char *message;
-
-    // Crear socket
-    socket_desc = socket(AF_INET , SOCK_STREAM , 0);
-    if (socket_desc == -1)
-    {
-        printf("Could not create socket");
-    }
+    printf("Asignando direccion IP y puerto...");
 
     // Preparar el sockaddr_en la structura
-    server.sin_family = AF_INET;
-    server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = htons( 8080 );
+    s->server.sin_family = AF_INET;
+    s->server.sin_addr.s_addr = INADDR_ANY;
+    s->server.sin_port = htons( 8080 );
 
-    // Bind
-    if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
+    if( bind(s->socketDes, (struct sockaddr *)&s->server, sizeof(s->server)) < 0)
     {
-        puts("Fallo el binding");
-        return 1;
+        printf("FAILED\n");
+        return false;
     }
-    else
+    printf("OK\n");
+    return true;
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+bool ListenSocket(struct Server *s)
+{
+    printf("Estableciendo en modo de espera...");
+    if (listen(s->socketDes, 1) == -1)
     {
-        puts("bind finalizado");
+        printf("FAILED\n");
+        return false;
     }
+    printf("OK\n");
+    return true;
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+void AcceptMode(Server *s, int serverType)
+{
+    /*-----------------------------------  Server Types ------------------------------------/*
+     *
+     * 1 - FIFO: se atendenderan la solicitudes conforme van llegando.
+     * 2 - FORK: se crea un PROCESO para cada solicitud.
+     * 3 - THREAD: se crea un THREAD para cada solicitud.
+     * 4 - PRE-THREAD: a una solicitud se le ASIGNA un thread que esta creado previamente.
+     *
+     *--------------------------------------------------------------------------------------*/
+
+    struct sockaddr_in client;
+    int c, newSocket, *newSock;
 
 
-    // Listen
-    listen(socket_desc, 3);
-
-    // Accept Connections
-    puts("Esperando nuevas solicitudes...");
+    printf("Esperando nuevas solicitudes...\n");
     c = sizeof(struct sockaddr_in);
 
-    while ( (newSocket = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c)) )
+    while ( (newSocket = accept(s->socketDes, (struct sockaddr *)&client, (socklen_t*)&c)) )
     {
-        puts("Conexion aceptada");
-
-        // Responder al cliente
-        message = "Hola! Recibi tu conexion pero debo irme.\n";
-        write(newSocket, message, strlen(message));
+        printf("Conexion aceptada.");
 
         pthread_t snifferThread;
         newSock = malloc(1);
@@ -129,22 +83,37 @@ int RunServer(void)
         if( pthread_create( &snifferThread , NULL ,  connectionHandler, (void*) newSock) < 0)
         {
             perror("No fue posible crear el thread");
-            return 1;
+
         }
 
-        puts("Thread creado con exito!");
+        printf("Thread creado con exito!\n");
     }
 
 
     if (newSocket < 0)
     {
         puts("Fallo en la conexion.");
-        return 1;
-    }
 
-    return 0;
+    }
 }
 
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+void RunServer(struct Server *s)
+{
+    // Ejecuta un servidor y lo deja esperando solicitudes.
+
+    printf("\n#------------- Inicializando Server -------------#\n\n");
+
+    if (!CreateSocket(s)) { return; }               // Crear el socket
+    if (!BindSocket(s)) { return; }                 // Bindear el socket a la direccion y puerto
+    if (!ListenSocket(s)) { return; }               // Establecer en modo de espera
+    AcceptMode(s, 3);                               // Aceptar solicitudes de cierto modo(revisar los modos en el metodo)
+
+    printf("\n#----------- Configuracion Finalizada -------------#\n\n");
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
 
 void *connectionHandler(void *socket_desc)
 {

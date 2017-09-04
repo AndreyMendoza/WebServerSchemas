@@ -2,8 +2,9 @@
 
 int main() {
 
-    RunServer();
-
+//    RunServers();
+    Server *s = {NULL, NULL};
+    RunServer(&s);
     return 0;
 
 }

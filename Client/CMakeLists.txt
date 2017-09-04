@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.8)
+project(Client)
+
+set(CMAKE_C_STANDARD 11)
+
+set(SOURCE_FILES main.c headers/client.h source/client.c)
+add_executable(Client ${SOURCE_FILES})

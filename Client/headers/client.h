@@ -1,5 +1,5 @@
-#ifndef SERVER_SERVER_H
-#define SERVER_SERVER_H
+#ifndef CLIENT_CLIENT_H
+#define CLIENT_CLIENT_H
 
 #include <sys/socket.h>
 #include <stdio.h>
@@ -17,13 +17,12 @@ typedef struct Server {
 }Server;
 
 bool CreateSocket(Server *s);
-bool BindSocket(Server *s);
-bool ListenSocket(Server *s);
-void AcceptMode(Server *s, int serverType);
-void RunServer(Server *s);
+bool Connect(Server *s);
+bool SendData(Server *s, char *message);
+bool ReceiveData(Server *s, char *message);
+void RunClient(Server *s);
 
-void *connectionHandler(void*);
+int RunClients(void);
+char* getHostByName(char *hostname);
 
-
-
-#endif //SERVER_SERVER_H
+#endif //CLIENT_CLIENT_H

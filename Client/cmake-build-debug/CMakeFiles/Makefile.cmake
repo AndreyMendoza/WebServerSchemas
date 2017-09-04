@@ -20,15 +20,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/CMakeLanguageInformation.cmake"
   "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/CMakeSystemSpecificInformation.cmake"
   "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/CMakeSystemSpecificInitialize.cmake"
-  "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/CheckIncludeFile.cmake"
-  "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/CheckLibraryExists.cmake"
-  "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/CheckSymbolExists.cmake"
   "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/Compiler/GNU-C.cmake"
   "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/Compiler/GNU-CXX.cmake"
   "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/Compiler/GNU.cmake"
-  "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/FindPackageHandleStandardArgs.cmake"
-  "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/FindPackageMessage.cmake"
-  "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/FindThreads.cmake"
   "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/Platform/Linux-GNU-C.cmake"
   "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/Platform/Linux-GNU-CXX.cmake"
   "/home/mackygero/Documents/clion-2017.2.2/bin/cmake/share/cmake-3.8/Modules/Platform/Linux-GNU.cmake"
@@ -50,5 +44,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/Server.dir/DependInfo.cmake"
+  "CMakeFiles/Client.dir/DependInfo.cmake"
   )
