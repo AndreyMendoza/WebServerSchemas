@@ -19,14 +19,14 @@ bool CreateSocket(Server *s)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-bool BindSocket(Server *s)
+bool BindSocket(Server *s, int port)
 {
     printf("Asignando direccion IP y puerto...");
 
     // Preparar el sockaddr_en la structura
     s->server.sin_family = AF_INET;
     s->server.sin_addr.s_addr = INADDR_ANY;
-    s->server.sin_port = htons( 8080 );
+    s->server.sin_port = htons( (uint16_t) port);
 
     if( bind(s->socketDes, (struct sockaddr *)&s->server, sizeof(s->server)) < 0)
     {
@@ -99,14 +99,14 @@ void AcceptMode(Server *s, int serverType)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-void RunServer(struct Server *s)
+void RunServer(struct Server *s, int port)
 {
     // Ejecuta un servidor y lo deja esperando solicitudes.
 
     printf("\n#------------- Inicializando Server -------------#\n\n");
 
     if (!CreateSocket(s)) { return; }               // Crear el socket
-    if (!BindSocket(s)) { return; }                 // Bindear el socket a la direccion y puerto
+    if (!BindSocket(s, port)) { return; }           // Bindear el socket a la direccion y puerto
     if (!ListenSocket(s)) { return; }               // Establecer en modo de espera
     AcceptMode(s, 3);                               // Aceptar solicitudes de cierto modo(revisar los modos en el metodo)
 

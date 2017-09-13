@@ -84,10 +84,16 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/mackygero/Documents/WebServerSchemas/Client/headers/List.h">
+			<Option target="Client"/>
+		</Unit>
 		<Unit filename="/home/mackygero/Documents/WebServerSchemas/Client/headers/client.h">
 			<Option target="Client"/>
 		</Unit>
 		<Unit filename="/home/mackygero/Documents/WebServerSchemas/Client/main.c">
+			<Option target="Client"/>
+		</Unit>
+		<Unit filename="/home/mackygero/Documents/WebServerSchemas/Client/source/List.c">
 			<Option target="Client"/>
 		</Unit>
 		<Unit filename="/home/mackygero/Documents/WebServerSchemas/Client/source/client.c">

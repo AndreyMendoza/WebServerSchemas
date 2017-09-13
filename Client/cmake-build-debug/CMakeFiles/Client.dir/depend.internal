@@ -4,6 +4,9 @@
 CMakeFiles/Client.dir/main.c.o
  /home/mackygero/Documents/WebServerSchemas/Client/headers/client.h
  /home/mackygero/Documents/WebServerSchemas/Client/main.c
+CMakeFiles/Client.dir/source/List.c.o
+ /home/mackygero/Documents/WebServerSchemas/Client/headers/List.h
+ /home/mackygero/Documents/WebServerSchemas/Client/source/List.c
 CMakeFiles/Client.dir/source/client.c.o
  /home/mackygero/Documents/WebServerSchemas/Client/headers/client.h
  /home/mackygero/Documents/WebServerSchemas/Client/source/client.c

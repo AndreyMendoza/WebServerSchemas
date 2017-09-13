@@ -5,6 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
   "/home/mackygero/Documents/WebServerSchemas/Server/main.c" "/home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug/CMakeFiles/Server.dir/main.c.o"
+  "/home/mackygero/Documents/WebServerSchemas/Server/source/List.c" "/home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug/CMakeFiles/Server.dir/source/List.c.o"
   "/home/mackygero/Documents/WebServerSchemas/Server/source/server.c" "/home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug/CMakeFiles/Server.dir/source/server.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")

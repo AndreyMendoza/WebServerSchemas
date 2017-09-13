@@ -150,6 +150,33 @@ main.c.s:
 	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/main.c.s
 .PHONY : main.c.s
 
+source/List.o: source/List.c.o
+
+.PHONY : source/List.o
+
+# target to build an object file
+source/List.c.o:
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/source/List.c.o
+.PHONY : source/List.c.o
+
+source/List.i: source/List.c.i
+
+.PHONY : source/List.i
+
+# target to preprocess a source file
+source/List.c.i:
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/source/List.c.i
+.PHONY : source/List.c.i
+
+source/List.s: source/List.c.s
+
+.PHONY : source/List.s
+
+# target to generate assembly for a file
+source/List.c.s:
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/source/List.c.s
+.PHONY : source/List.c.s
+
 source/server.o: source/server.c.o
 
 .PHONY : source/server.o
@@ -189,6 +216,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... source/List.o"
+	@echo "... source/List.i"
+	@echo "... source/List.s"
 	@echo "... source/server.o"
 	@echo "... source/server.i"
 	@echo "... source/server.s"
