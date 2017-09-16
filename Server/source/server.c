@@ -19,13 +19,22 @@ bool CreateSocket(Server *s)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-bool BindSocket(Server *s, int port)
+bool BindSocket(Server *s, char *ip, int port)
 {
     printf("Asignando direccion IP y puerto...");
 
+    // Asignar IP
+    struct in_addr ipAddr;
+    if (inet_pton(AF_INET, &ip, &ipAddr) == -1)
+    {
+        printf("FAILED\n");
+        return false;
+    }
+
     // Preparar el sockaddr_en la structura
     s->server.sin_family = AF_INET;
-    s->server.sin_addr.s_addr = INADDR_ANY;
+    //s->server.sin_addr.s_addr = INADDR_ANY;
+    s->server.sin_addr = ipAddr;
     s->server.sin_port = htons( (uint16_t) port);
 
     if( bind(s->socketDes, (struct sockaddr *)&s->server, sizeof(s->server)) < 0)
@@ -65,7 +74,7 @@ void AcceptMode(Server *s, int serverType)
      *--------------------------------------------------------------------------------------*/
 
     struct sockaddr_in client;
-    int c, newSocket, *newSock;
+    int c, newSocket;
 
 
     printf("Esperando nuevas solicitudes...\n");
@@ -73,20 +82,11 @@ void AcceptMode(Server *s, int serverType)
 
     while ( (newSocket = accept(s->socketDes, (struct sockaddr *)&client, (socklen_t*)&c)) )
     {
-        printf("Conexion aceptada.");
 
-        pthread_t snifferThread;
-        newSock = malloc(1);
-        *newSock = newSocket;
+        // Crear Thread que se dedique a esa solicitud
+        if (serverType == 3)
+            CreateThread(newSocket);
 
-
-        if( pthread_create( &snifferThread , NULL ,  connectionHandler, (void*) newSock) < 0)
-        {
-            perror("No fue posible crear el thread");
-
-        }
-
-        printf("Thread creado con exito!\n");
     }
 
 
@@ -106,11 +106,31 @@ void RunServer(struct Server *s, int port)
     printf("\n#------------- Inicializando Server -------------#\n\n");
 
     if (!CreateSocket(s)) { return; }               // Crear el socket
-    if (!BindSocket(s, port)) { return; }           // Bindear el socket a la direccion y puerto
+    if (!BindSocket(s, "127.0.0.1", port)) { return; }           // Bindear el socket a la direccion y puerto
     if (!ListenSocket(s)) { return; }               // Establecer en modo de espera
+    printf("\n#----------- Configuracion Finalizada -------------#\n\n");
     AcceptMode(s, 3);                               // Aceptar solicitudes de cierto modo(revisar los modos en el metodo)
 
-    printf("\n#----------- Configuracion Finalizada -------------#\n\n");
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+void CreateThread(int newSocket)
+{
+    int *newSock;
+
+    printf("Conexion aceptada.\n");
+
+    pthread_t snifferThread;
+    newSock = malloc(1);
+    *newSock = newSocket;
+
+
+    if (pthread_create(&snifferThread, NULL, connectionHandler, (void *) newSock) < 0) {
+        perror("No fue posible crear el thread");
+
+    }
+    printf("Thread creado con exito!\n");
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -118,22 +138,26 @@ void RunServer(struct Server *s, int port)
 void *connectionHandler(void *socket_desc)
 {
     // Agarrar el socket
-    int sock = *(int*)socket_desc;
+    int client = *(int*)socket_desc;
+
     int readSize;
     char *message, clientMessage[2000];
+    memset(clientMessage, 0, 2000);
 
-    // Enviar mensaje al cliente
-    message = "Hola! Soy tu thread de conexion\n";
-    write(sock, message, strlen(message));
-
-    message = "Mi deber es comunicarme contigo";
-    write(sock, message, strlen(message));
 
     // Recibir mensaje del cliente
-    while ((readSize = recv(sock, clientMessage, 2000, 0)) > 0)
+    while ((readSize = recv(client, clientMessage, 2000, 0)) > 0)
     {
         // Responder al cliente
-        write (sock, clientMessage, strlen(message));
+        printf("Mensaje Recibido:\n");
+        message = "HTTP/1.0 200 OK\r\n\r\n";
+        send(client, message, strlen(message), 0);
+
+        //message = "Pruebita\r\n";
+        //send(client, message, strlen(message), 0);
+
+        //printf(clientMessage);
+
     }
     if (readSize == 0)
     {
@@ -147,7 +171,7 @@ void *connectionHandler(void *socket_desc)
 
 
     // Liberar el puntero del socket
-    free(socket_desc);
+    close(client);
 
     return 0;
 }

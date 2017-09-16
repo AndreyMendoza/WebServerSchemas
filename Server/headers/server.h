@@ -17,12 +17,13 @@ typedef struct Server {
 }Server;
 
 bool CreateSocket(Server *s);
-bool BindSocket(Server *s, int port);
+bool BindSocket(Server *s, char *ip, int port);
 bool ListenSocket(Server *s);
 void AcceptMode(Server *s, int serverType);
 void RunServer(Server *s, int port);
 
 void *connectionHandler(void*);
+void CreateThread(int newSocket);
 
 
 
