@@ -127,7 +127,7 @@ void CreateThread(int newSocket)
     *newSock = newSocket;
 
 
-    if (pthread_create(&snifferThread, NULL, connectionHandler, (void *) newSock) < 0) {
+    if (pthread_create(&snifferThread, NULL, ThreadedServer, (void *) newSock) < 0) {
         perror("No fue posible crear el thread");
 
     }
@@ -136,36 +136,70 @@ void CreateThread(int newSocket)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-bool send_all(int socket, void *buffer, size_t length)
+void *ThreadedServer(void *clientSock)
 {
-    char *ptr = (char*) buffer;
-    while (length > 0)
+    // Agarrar el socket
+    int client = *(int*)clientSock;
+
+    ssize_t readSize;
+    char *message, clientMessage[2000];
+    memset(clientMessage, 0, 2000);
+
+    // Lecutra de la solicitud
+    readSize = recv(client, clientMessage, 2000, 0);
+
+    // Archivo solicitado por el cliente
+    char *fileName = GetFileName(clientMessage);
+
+    prueba(client, fileName);
+
+    if (readSize == 0)
     {
-        int i = send(socket, ptr, length,0);
-        if (i < 1) return false;
-        ptr += i;
-        length -= i;
+        puts("El cliente se ha desconectado");
+        fflush(stdout);
     }
-    return true;
+    else if (readSize == -1)
+    {
+        perror("Error recibiendo mensaje");
+    }
+
+
+    // Liberar el puntero del socket
+    close(client);
+
+    return 0;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-bool writeStrToClient(int sckt, const char *str)
+char *GetFileName(char *header)
 {
-    return send_all(sckt, str, strlen(str));
+    char *fileName;
+
+    // Puntero al primero token
+    fileName = strtok(header, " ");
+    fileName = strtok(NULL, " ");
+
+    return fileName;
+
 }
+
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-int prueba(int client){
+int prueba(int client, char *fileName){
 
     long fsize;
-    //FILE *fp = fopen("../tests/test1.html", "rb");
-    //FILE *fp = fopen("../tests/test2.txt", "rb");
-    //FILE *fp = fopen("../tests/test3.png", "rb");
-    //FILE *fp = fopen("../tests/test4.jpg", "rb");
-    FILE *fp = fopen("../tests/satelite.jpg", "rb");
+
+    // Formando ruta relativa del archivo por enviar
+    char *path = "../tests";
+    char *filePath = malloc(strlen(path) + 5);
+    strcpy(filePath, path);
+    strcat(filePath, fileName);
+
+    // Abrir archivo por enviar
+    FILE *fp = fopen(filePath, "rb");
+
     if (!fp){
         perror("The file was not opened");
         exit(1);
@@ -222,47 +256,27 @@ int prueba(int client){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-void *connectionHandler(void *socket_desc)
+bool send_all(int socket, void *buffer, size_t length)
 {
-    // Agarrar el socket
-    int client = *(int*)socket_desc;
-
-    ssize_t readSize;
-    char *message, clientMessage[2000];
-    memset(clientMessage, 0, 2000);
-
-    readSize = recv(client, clientMessage, 2000, 0);
-
-    // Responder al cliente
-    printf("Mensaje Recibido:\n");
-    printf(clientMessage);
-
-    prueba(client);
-
-
-    if (readSize == 0)
+    char *ptr = (char*) buffer;
+    while (length > 0)
     {
-        puts("El cliente se ha desconectado");
-        fflush(stdout);
+        int i = send(socket, ptr, length,0);
+        if (i < 1) return false;
+        ptr += i;
+        length -= i;
     }
-    else if (readSize == -1)
-    {
-        perror("Error recibiendo mensaje");
-    }
-
-
-    // Liberar el puntero del socket
-    close(client);
-
-    return 0;
+    return true;
 }
 
+/*--------------------------------------------------------------------------------------------------------------------*/
 
+bool writeStrToClient(int sckt, const char *str)
+{
+    return send_all(sckt, str, strlen(str));
+}
 
-
-
-
-
+/*--------------------------------------------------------------------------------------------------------------------*/
 
 
 

@@ -22,8 +22,12 @@ bool ListenSocket(Server *s);
 void AcceptMode(Server *s, int serverType);
 void RunServer(Server *s, int port);
 
-void *connectionHandler(void*);
+void *ThreadedServer(void *clientSock);
 void CreateThread(int newSocket);
+char *GetFileName(char *header);
+bool send_all(int socket, void *buffer, size_t length);
+bool writeStrToClient(int sckt, const char *str);
+int prueba(int client, char *fileName);
 
 
 
