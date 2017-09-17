@@ -134,10 +134,7 @@ void CreateThread(int newSocket)
     printf("Thread creado con exito!\n");
 }
 
-
-
-
-
+/*--------------------------------------------------------------------------------------------------------------------*/
 
 bool send_all(int socket, void *buffer, size_t length)
 {
@@ -152,13 +149,14 @@ bool send_all(int socket, void *buffer, size_t length)
     return true;
 }
 
-
+/*--------------------------------------------------------------------------------------------------------------------*/
 
 bool writeStrToClient(int sckt, const char *str)
 {
     return send_all(sckt, str, strlen(str));
 }
 
+/*--------------------------------------------------------------------------------------------------------------------*/
 
 int prueba(int client){
 
@@ -166,7 +164,8 @@ int prueba(int client){
     //FILE *fp = fopen("../tests/test1.html", "rb");
     //FILE *fp = fopen("../tests/test2.txt", "rb");
     //FILE *fp = fopen("../tests/test3.png", "rb");
-    FILE *fp = fopen("../tests/test4.jpg", "rb");
+    //FILE *fp = fopen("../tests/test4.jpg", "rb");
+    FILE *fp = fopen("../tests/satelite.jpg", "rb");
     if (!fp){
         perror("The file was not opened");
         exit(1);
@@ -228,29 +227,19 @@ void *connectionHandler(void *socket_desc)
     // Agarrar el socket
     int client = *(int*)socket_desc;
 
-    int readSize;
+    ssize_t readSize;
     char *message, clientMessage[2000];
     memset(clientMessage, 0, 2000);
 
+    readSize = recv(client, clientMessage, 2000, 0);
 
-    // Recibir mensaje del cliente
-    //while ((readSize = recv(client, clientMessage, 2000, 0)) > 0)
-    //{
-        readSize = recv(client, clientMessage, 2000, 0);
-        // Responder al cliente
-        printf("Mensaje Recibido:\n");
-        //message = "HTTP/1.0 200 OK\r\n\r\n";
+    // Responder al cliente
+    printf("Mensaje Recibido:\n");
+    printf(clientMessage);
 
-        prueba(client);
+    prueba(client);
 
-        //send(client, message, strlen(message),0);
 
-        //message = "Pruebita\r\n";
-        //send(client, message, strlen(message), 0);
-
-        //printf(clientMessage);
-
-    //}
     if (readSize == 0)
     {
         puts("El cliente se ha desconectado");
