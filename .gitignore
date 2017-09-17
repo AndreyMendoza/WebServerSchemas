@@ -1,2 +1,8 @@
 
+<<<<<<< HEAD
 Client/cmake-build-debug/
+=======
+Server/\.idea/
+
+Server/cmake-build-debug/
+>>>>>>> master
