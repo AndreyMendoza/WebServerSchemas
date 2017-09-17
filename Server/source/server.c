@@ -151,7 +151,7 @@ void *ThreadedServer(void *clientSock)
     // Archivo solicitado por el cliente
     char *fileName = GetFileName(clientMessage);
 
-    prueba(client, fileName);
+    ProcessRequest(client, fileName);
 
     if (readSize == 0)
     {
@@ -184,12 +184,34 @@ char *GetFileName(char *header)
 
 }
 
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+char *GetContentType(char *fileName)
+{
+    char *extension, *fileType;
+
+    extension = strtok(fileName, ".");
+    extension = strtok(NULL, ".");
+
+    if (strcmp(extension, "jpg") == 0 || strcmp(extension, "png") == 0)
+        fileType = "Content-Type: image/";
+    else
+        fileType = "Content-Type: text/";
+
+    char *result = malloc(strlen(fileType) + 15);
+    strcpy(result, fileType);
+    strcat(result, extension);
+    strcat(result, "\r\n");
+
+    return result;
+}
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-int prueba(int client, char *fileName){
+int ProcessRequest(int client, char *fileName){
 
     long fsize;
+
 
     // Formando ruta relativa del archivo por enviar
     char *path = "../tests";
@@ -201,11 +223,14 @@ int prueba(int client, char *fileName){
     FILE *fp = fopen(filePath, "rb");
 
     if (!fp){
-        perror("The file was not opened");
-        exit(1);
+        perror("Archivo no encontrado");
+        WriteToClient(client, "HTTP/1.1 200 Not Found\r\n");
+        filePath = "../errors/NotFound.html";
+        //close(client);
+        //return -1;
     }
 
-    printf("The file was opened\n");
+    //printf("The file was opened\n");
 
     if (fseek(fp, 0, SEEK_END) == -1){
         perror("The file was not seeked");
@@ -231,23 +256,21 @@ int prueba(int client, char *fileName){
     }
     fclose(fp);
 
-    if (!writeStrToClient(client, "HTTP/1.1 200 OK\r\n")){
+    if (!WriteToClient(client, "HTTP/1.1 200 OK\r\n")){
         close(client);
     }
 
-    //if (!writeStrToClient(client, "Content-Type: text/html\r\n")){
-    //if (!writeStrToClient(client, "Content-Type: text/plain\r\n")){
-    //if (!writeStrToClient(client, "Content-Type: image/png\r\n")){
-    if (!writeStrToClient(client, "Content-Type: image/jpg\r\n")){
+    char *contentType = GetContentType(fileName);
+    if (!WriteToClient(client, contentType)){
         close(client);
     }
 
-    if (!writeStrToClient(client, "Connection: close\r\n\r\n") == -1){
+    if (!WriteToClient(client, "Connection: close\r\n\r\n") == -1){
         close(client);
     }
 
-    //if (!writeStrToClient(client, "<html><body><H1>Hello world Armando2232 jajajja</H1></body></html>")){
-    if (!send_all(client, msg, fsize)){
+    //if (!WriteToClient(client, "<html><body><H1>Hello world Armando2232 jajajja</H1></body></html>")){
+    if (!SendAll(client, msg, fsize)){
         close(client);
     }
 
@@ -256,7 +279,7 @@ int prueba(int client, char *fileName){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-bool send_all(int socket, void *buffer, size_t length)
+bool SendAll(int socket, void *buffer, size_t length)
 {
     char *ptr = (char*) buffer;
     while (length > 0)
@@ -271,9 +294,9 @@ bool send_all(int socket, void *buffer, size_t length)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-bool writeStrToClient(int sckt, const char *str)
+bool WriteToClient(int sckt, const char *str)
 {
-    return send_all(sckt, str, strlen(str));
+    return SendAll(sckt, str, strlen(str));
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

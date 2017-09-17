@@ -25,9 +25,9 @@ void RunServer(Server *s, int port);
 void *ThreadedServer(void *clientSock);
 void CreateThread(int newSocket);
 char *GetFileName(char *header);
-bool send_all(int socket, void *buffer, size_t length);
-bool writeStrToClient(int sckt, const char *str);
-int prueba(int client, char *fileName);
+bool SendAll(int socket, void *buffer, size_t length);
+bool WriteToClient(int sckt, const char *str);
+int ProcessRequest(int client, char *fileName);
 
 
 
