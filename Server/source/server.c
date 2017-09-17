@@ -162,9 +162,6 @@ bool writeStrToClient(int sckt, const char *str)
 
 int prueba(int client){
 
-    //char *buffer;
-    //int bufsize = 1024;
-
     long fsize;
     //FILE *fp = fopen("../tests/test1.html", "rb");
     //FILE *fp = fopen("../tests/test2.txt", "rb");
