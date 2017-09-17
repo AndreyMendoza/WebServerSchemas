@@ -224,13 +224,10 @@ int ProcessRequest(int client, char *fileName){
 
     if (!fp){
         perror("Archivo no encontrado");
-        WriteToClient(client, "HTTP/1.1 200 Not Found\r\n");
-        filePath = "../errors/NotFound.html";
-        //close(client);
-        //return -1;
+        WriteToClient(client, "HTTP/1.1 404 Not Found\r\n");
+        close(client);
+        return -1;
     }
-
-    //printf("The file was opened\n");
 
     if (fseek(fp, 0, SEEK_END) == -1){
         perror("The file was not seeked");
@@ -269,7 +266,6 @@ int ProcessRequest(int client, char *fileName){
         close(client);
     }
 
-    //if (!WriteToClient(client, "<html><body><H1>Hello world Armando2232 jajajja</H1></body></html>")){
     if (!SendAll(client, msg, fsize)){
         close(client);
     }
