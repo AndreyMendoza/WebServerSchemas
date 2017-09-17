@@ -6,13 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/home/mackygero/Documents/WebServerSchemas/Server/headers/List.h
+/home/armando/Documentos/S.O/WebServerSchemas/Server/headers/List.h
 stdlib.h
 -
 stdio.h
 -
 
-/home/mackygero/Documents/WebServerSchemas/Server/headers/server.h
+/home/armando/Documentos/S.O/WebServerSchemas/Server/headers/server.h
 sys/socket.h
 -
 stdio.h
@@ -32,19 +32,19 @@ pthread.h
 stdlib.h
 -
 
-/home/mackygero/Documents/WebServerSchemas/Server/main.c
+/home/armando/Documentos/S.O/WebServerSchemas/Server/main.c
 headers/server.h
-/home/mackygero/Documents/WebServerSchemas/Server/headers/server.h
+/home/armando/Documentos/S.O/WebServerSchemas/Server/headers/server.h
 headers/List.h
-/home/mackygero/Documents/WebServerSchemas/Server/headers/List.h
+/home/armando/Documentos/S.O/WebServerSchemas/Server/headers/List.h
 
-/home/mackygero/Documents/WebServerSchemas/Server/source/List.c
+/home/armando/Documentos/S.O/WebServerSchemas/Server/source/List.c
 printf.h
 -
 ../headers/List.h
-/home/mackygero/Documents/WebServerSchemas/Server/headers/List.h
+/home/armando/Documentos/S.O/WebServerSchemas/Server/headers/List.h
 
-/home/mackygero/Documents/WebServerSchemas/Server/source/server.c
+/home/armando/Documentos/S.O/WebServerSchemas/Server/source/server.c
 ../headers/server.h
-/home/mackygero/Documents/WebServerSchemas/Server/headers/server.h
+/home/armando/Documentos/S.O/WebServerSchemas/Server/headers/server.h
 

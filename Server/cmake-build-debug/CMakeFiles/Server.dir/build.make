@@ -34,19 +34,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/mackygero/Documents/clion-2017.2.2/bin/cmake/bin/cmake
+CMAKE_COMMAND = /opt/clion-2017.2.2/bin/cmake/bin/cmake
 
 # The command to remove a file.
-RM = /home/mackygero/Documents/clion-2017.2.2/bin/cmake/bin/cmake -E remove -f
+RM = /opt/clion-2017.2.2/bin/cmake/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mackygero/Documents/WebServerSchemas/Server
+CMAKE_SOURCE_DIR = /home/armando/Documentos/S.O/WebServerSchemas/Server
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug
+CMAKE_BINARY_DIR = /home/armando/Documentos/S.O/WebServerSchemas/Server/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Server.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/Server.dir/flags.make
 
 CMakeFiles/Server.dir/main.c.o: CMakeFiles/Server.dir/flags.make
 CMakeFiles/Server.dir/main.c.o: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/Server.dir/main.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/main.c.o   -c /home/mackygero/Documents/WebServerSchemas/Server/main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/armando/Documentos/S.O/WebServerSchemas/Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/Server.dir/main.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/main.c.o   -c /home/armando/Documentos/S.O/WebServerSchemas/Server/main.c
 
 CMakeFiles/Server.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/main.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/mackygero/Documents/WebServerSchemas/Server/main.c > CMakeFiles/Server.dir/main.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/armando/Documentos/S.O/WebServerSchemas/Server/main.c > CMakeFiles/Server.dir/main.c.i
 
 CMakeFiles/Server.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/main.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mackygero/Documents/WebServerSchemas/Server/main.c -o CMakeFiles/Server.dir/main.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/armando/Documentos/S.O/WebServerSchemas/Server/main.c -o CMakeFiles/Server.dir/main.c.s
 
 CMakeFiles/Server.dir/main.c.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/Server.dir/main.c.o.provides.build: CMakeFiles/Server.dir/main.c.o
 
 CMakeFiles/Server.dir/source/server.c.o: CMakeFiles/Server.dir/flags.make
 CMakeFiles/Server.dir/source/server.c.o: ../source/server.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/Server.dir/source/server.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/source/server.c.o   -c /home/mackygero/Documents/WebServerSchemas/Server/source/server.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/armando/Documentos/S.O/WebServerSchemas/Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/Server.dir/source/server.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/source/server.c.o   -c /home/armando/Documentos/S.O/WebServerSchemas/Server/source/server.c
 
 CMakeFiles/Server.dir/source/server.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/source/server.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/mackygero/Documents/WebServerSchemas/Server/source/server.c > CMakeFiles/Server.dir/source/server.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/armando/Documentos/S.O/WebServerSchemas/Server/source/server.c > CMakeFiles/Server.dir/source/server.c.i
 
 CMakeFiles/Server.dir/source/server.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/source/server.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mackygero/Documents/WebServerSchemas/Server/source/server.c -o CMakeFiles/Server.dir/source/server.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/armando/Documentos/S.O/WebServerSchemas/Server/source/server.c -o CMakeFiles/Server.dir/source/server.c.s
 
 CMakeFiles/Server.dir/source/server.c.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/Server.dir/source/server.c.o.provides.build: CMakeFiles/Server.dir/so
 
 CMakeFiles/Server.dir/source/List.c.o: CMakeFiles/Server.dir/flags.make
 CMakeFiles/Server.dir/source/List.c.o: ../source/List.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/Server.dir/source/List.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/source/List.c.o   -c /home/mackygero/Documents/WebServerSchemas/Server/source/List.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/armando/Documentos/S.O/WebServerSchemas/Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/Server.dir/source/List.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/source/List.c.o   -c /home/armando/Documentos/S.O/WebServerSchemas/Server/source/List.c
 
 CMakeFiles/Server.dir/source/List.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/source/List.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/mackygero/Documents/WebServerSchemas/Server/source/List.c > CMakeFiles/Server.dir/source/List.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/armando/Documentos/S.O/WebServerSchemas/Server/source/List.c > CMakeFiles/Server.dir/source/List.c.i
 
 CMakeFiles/Server.dir/source/List.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/source/List.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mackygero/Documents/WebServerSchemas/Server/source/List.c -o CMakeFiles/Server.dir/source/List.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/armando/Documentos/S.O/WebServerSchemas/Server/source/List.c -o CMakeFiles/Server.dir/source/List.c.s
 
 CMakeFiles/Server.dir/source/List.c.o.requires:
 
@@ -143,7 +143,7 @@ Server: CMakeFiles/Server.dir/source/server.c.o
 Server: CMakeFiles/Server.dir/source/List.c.o
 Server: CMakeFiles/Server.dir/build.make
 Server: CMakeFiles/Server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable Server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/armando/Documentos/S.O/WebServerSchemas/Server/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable Server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -162,6 +162,6 @@ CMakeFiles/Server.dir/clean:
 .PHONY : CMakeFiles/Server.dir/clean
 
 CMakeFiles/Server.dir/depend:
-	cd /home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mackygero/Documents/WebServerSchemas/Server /home/mackygero/Documents/WebServerSchemas/Server /home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug /home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug /home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug/CMakeFiles/Server.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/armando/Documentos/S.O/WebServerSchemas/Server/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/armando/Documentos/S.O/WebServerSchemas/Server /home/armando/Documentos/S.O/WebServerSchemas/Server /home/armando/Documentos/S.O/WebServerSchemas/Server/cmake-build-debug /home/armando/Documentos/S.O/WebServerSchemas/Server/cmake-build-debug /home/armando/Documentos/S.O/WebServerSchemas/Server/cmake-build-debug/CMakeFiles/Server.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Server.dir/depend
 

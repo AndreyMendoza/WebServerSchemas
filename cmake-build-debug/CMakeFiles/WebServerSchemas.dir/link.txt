@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/WebServerSchemas.dir/Client/source/client.c.o CMakeFiles/WebServerSchemas.dir/Client/source/List.c.o CMakeFiles/WebServerSchemas.dir/Client/main.c.o CMakeFiles/WebServerSchemas.dir/Server/source/List.c.o CMakeFiles/WebServerSchemas.dir/Server/source/server.c.o CMakeFiles/WebServerSchemas.dir/Server/main.c.o  -o WebServerSchemas 

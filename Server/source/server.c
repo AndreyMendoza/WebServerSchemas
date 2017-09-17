@@ -43,6 +43,7 @@ bool BindSocket(Server *s, char *ip, int port)
         return false;
     }
     printf("OK\n");
+
     return true;
 }
 
@@ -133,6 +134,96 @@ void CreateThread(int newSocket)
     printf("Thread creado con exito!\n");
 }
 
+
+
+
+
+
+bool send_all(int socket, void *buffer, size_t length)
+{
+    char *ptr = (char*) buffer;
+    while (length > 0)
+    {
+        int i = send(socket, ptr, length,0);
+        if (i < 1) return false;
+        ptr += i;
+        length -= i;
+    }
+    return true;
+}
+
+
+
+bool writeStrToClient(int sckt, const char *str)
+{
+    return send_all(sckt, str, strlen(str));
+}
+
+
+int prueba(int client){
+
+    //char *buffer;
+    //int bufsize = 1024;
+
+    long fsize;
+    //FILE *fp = fopen("../tests/test1.html", "rb");
+    //FILE *fp = fopen("../tests/test2.txt", "rb");
+    //FILE *fp = fopen("../tests/test3.png", "rb");
+    FILE *fp = fopen("../tests/test4.jpg", "rb");
+    if (!fp){
+        perror("The file was not opened");
+        exit(1);
+    }
+
+    printf("The file was opened\n");
+
+    if (fseek(fp, 0, SEEK_END) == -1){
+        perror("The file was not seeked");
+        exit(1);
+    }
+
+    fsize = ftell(fp);
+    if (fsize == -1) {
+        perror("The file size was not retrieved");
+        exit(1);
+    }
+    rewind(fp);
+
+    char *msg = (char*) malloc(fsize);
+    if (!msg){
+        perror("The file buffer was not allocated\n");
+        exit(1);
+    }
+
+    if (fread(msg, fsize, 1, fp) != 1){
+        perror("The file was not read\n");
+        exit(1);
+    }
+    fclose(fp);
+
+    if (!writeStrToClient(client, "HTTP/1.1 200 OK\r\n")){
+        close(client);
+    }
+
+    //if (!writeStrToClient(client, "Content-Type: text/html\r\n")){
+    //if (!writeStrToClient(client, "Content-Type: text/plain\r\n")){
+    //if (!writeStrToClient(client, "Content-Type: image/png\r\n")){
+    if (!writeStrToClient(client, "Content-Type: image/jpg\r\n")){
+        close(client);
+    }
+
+    if (!writeStrToClient(client, "Connection: close\r\n\r\n") == -1){
+        close(client);
+    }
+
+    //if (!writeStrToClient(client, "<html><body><H1>Hello world Armando2232 jajajja</H1></body></html>")){
+    if (!send_all(client, msg, fsize)){
+        close(client);
+    }
+
+    printf("The file was sent successfully\n");
+}
+
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 void *connectionHandler(void *socket_desc)
@@ -146,19 +237,23 @@ void *connectionHandler(void *socket_desc)
 
 
     // Recibir mensaje del cliente
-    while ((readSize = recv(client, clientMessage, 2000, 0)) > 0)
-    {
+    //while ((readSize = recv(client, clientMessage, 2000, 0)) > 0)
+    //{
+        readSize = recv(client, clientMessage, 2000, 0);
         // Responder al cliente
         printf("Mensaje Recibido:\n");
-        message = "HTTP/1.0 200 OK\r\n\r\n";
-        send(client, message, strlen(message), 0);
+        //message = "HTTP/1.0 200 OK\r\n\r\n";
+
+        prueba(client);
+
+        //send(client, message, strlen(message),0);
 
         //message = "Pruebita\r\n";
         //send(client, message, strlen(message), 0);
 
         //printf(clientMessage);
 
-    }
+    //}
     if (readSize == 0)
     {
         puts("El cliente se ha desconectado");
