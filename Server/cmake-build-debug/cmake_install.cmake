@@ -1,4 +1,4 @@
-# Install script for directory: /home/mackygero/Documents/WebServerSchemas/Server
+# Install script for directory: /home/armando/Documentos/S.O/WebServerSchemas/Server
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/mackygero/Documents/WebServerSchemas/Server/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/armando/Documentos/S.O/WebServerSchemas/Server/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
