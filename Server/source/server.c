@@ -149,7 +149,7 @@ void *connectionHandler(void *socket_desc)
     while ((readSize = recv(client, clientMessage, 2000, 0)) > 0)
     {
         // Responder al cliente
-        printf("Mensaje Recibido:\n");
+        printf("Cliente recibido:\n");
         message = "HTTP/1.0 200 OK\r\n\r\n";
         send(client, message, strlen(message), 0);
 
