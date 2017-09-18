@@ -39,6 +39,7 @@ bool WriteToClient(int sckt, const char *str);
 void ProcessRequest(int client, char *fileName);
 bool InitThreadPool(int nThreads);
 void *PreThreadedServer(void*);
+void FIFOServer(int client);
 
 
 

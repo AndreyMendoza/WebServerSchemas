@@ -84,11 +84,16 @@ void AcceptMode(Server *s, int serverType, int nThreads)
 
     while ( (newClient = accept(s->socketDes, (struct sockaddr *)&client, (socklen_t*)&c)) )
     {
+        // Atender solicitud obtenida
+        if (serverType == 1)
+        {
+            FIFOServer(newClient);
+        }
         // Crear Proceso que se dedique a esa solicitud
         if (serverType == 2) {
             CreateProcess(newClient, s, serverType);
 
-        }
+
         // Crear Thread que se dedique a esa solicitud
         if (serverType == 3)
             CreateThread(newClient);
@@ -152,6 +157,34 @@ void RunServer(struct Server *s, int port, int type, int nThreads)
             return;
     }
     AcceptMode(s, type, nThreads);
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+void FIFOServer(int client)
+{
+    ssize_t readSize;
+    char *message, clientMessage[2000], *fileName;
+    memset(clientMessage, 0, 2000);
+    // Lectura de la solicitud
+    readSize = recv(client, clientMessage, 2000, 0);
+
+    // Archivo solicitado por el cliente
+    fileName = GetFileName(clientMessage);
+
+    ProcessRequest(client, fileName);
+
+    if (readSize == 0)
+    {
+        printf("Thread %ld liberado. El cliente se ha desconectado%d\n",(long)threadID, client);
+        fflush(stdout);
+    }
+    else if (readSize == -1)
+    {
+        perror("Error recibiendo mensaje del cliente.");
+    }
+    // Liberar el puntero del socket
+    close(client);
 
 }
 
