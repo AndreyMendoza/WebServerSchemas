@@ -224,10 +224,12 @@ int ProcessRequest(int client, char *fileName){
 
     if (!fp){
         perror("Archivo no encontrado");
-        WriteToClient(client, "HTTP/1.1 404 Not Found\r\n");
+        WriteToClient(client, "HTTP/1.1 404 Not Found\r\n\r\n");
         close(client);
         return -1;
     }
+
+    //printf("The file was opened\n");
 
     if (fseek(fp, 0, SEEK_END) == -1){
         perror("The file was not seeked");
