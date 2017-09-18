@@ -27,7 +27,7 @@ void CreateThread(int newSocket);
 char *GetFileName(char *header);
 bool SendAll(int socket, void *buffer, size_t length);
 bool WriteToClient(int sckt, const char *str);
-int ProcessRequest(int client, char *fileName);
+void ProcessRequest(int client, char *fileName);
 
 
 

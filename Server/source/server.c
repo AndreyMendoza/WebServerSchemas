@@ -188,17 +188,25 @@ char *GetFileName(char *header)
 
 char *GetContentType(char *fileName)
 {
-    char *extension, *fileType;
+    char *extension, *fileType, *result;
 
     extension = strtok(fileName, ".");
     extension = strtok(NULL, ".");
 
     if (strcmp(extension, "jpg") == 0 || strcmp(extension, "png") == 0)
         fileType = "Content-Type: image/";
-    else
+    else if (strcmp(extension, "html") == 0)
+    {
         fileType = "Content-Type: text/";
+        extension = "html";
+    }
+    else
+    {
+        fileType = "Content-Type: text/";
+        extension = "plain";
+    }
 
-    char *result = malloc(strlen(fileType) + 15);
+    result = malloc(strlen(fileType) + 15);
     strcpy(result, fileType);
     strcat(result, extension);
     strcat(result, "\r\n");
@@ -208,69 +216,46 @@ char *GetContentType(char *fileName)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-int ProcessRequest(int client, char *fileName){
+void ProcessRequest(int client, char *fileName){
 
     long fsize;
-
+    char *path, *filePath, *msg, *contentType;
 
     // Formando ruta relativa del archivo por enviar
-    char *path = "../tests";
-    char *filePath = malloc(strlen(path) + 5);
+    path = "../tests";
+    filePath = malloc(strlen(path) + 5);
     strcpy(filePath, path);
     strcat(filePath, fileName);
 
     // Abrir archivo por enviar
     FILE *fp = fopen(filePath, "rb");
 
-    if (!fp){
+    // Si el archivo no se encuentra, enviar HTML de "no encontrado"
+    if (!fp) {
         perror("Archivo no encontrado");
-        WriteToClient(client, "HTTP/1.1 404 Not Found\r\n");
-        close(client);
-        return -1;
+        fp = fopen("../errors/notfound.html", "rb");
     }
 
-    if (fseek(fp, 0, SEEK_END) == -1){
-        perror("The file was not seeked");
-        exit(1);
-    }
-
+    // Verificar que el archivo contenga informacion
+    fseek(fp, 0, SEEK_END);
     fsize = ftell(fp);
-    if (fsize == -1) {
-        perror("The file size was not retrieved");
-        exit(1);
-    }
     rewind(fp);
 
-    char *msg = (char*) malloc(fsize);
-    if (!msg){
-        perror("The file buffer was not allocated\n");
-        exit(1);
-    }
-
-    if (fread(msg, fsize, 1, fp) != 1){
-        perror("The file was not read\n");
-        exit(1);
-    }
+    // Lectura del archivo
+    msg = (char*) malloc(fsize);
+    fread(msg, fsize, 1, fp);
     fclose(fp);
 
-    if (!WriteToClient(client, "HTTP/1.1 200 OK\r\n")){
-        close(client);
-    }
+    // Construir encabezado
+    WriteToClient(client, "HTTP/1.1 200 OK\r\n");
+    contentType = GetContentType(fileName);
+    WriteToClient(client, contentType);
+    WriteToClient(client, "Connection: close\r\n\r\n");
 
-    char *contentType = GetContentType(fileName);
-    if (!WriteToClient(client, contentType)){
-        close(client);
-    }
+    // Envio del archivo al cliente
+    SendAll(client, msg, fsize);
 
-    if (!WriteToClient(client, "Connection: close\r\n\r\n") == -1){
-        close(client);
-    }
-
-    if (!SendAll(client, msg, fsize)){
-        close(client);
-    }
-
-    printf("The file was sent successfully\n");
+    printf("Respuesta enviada al cliente!\n");
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
