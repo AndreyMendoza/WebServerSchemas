@@ -1,5 +1,6 @@
 #include "../headers/server.h"
-
+#include <wait.h>
+#include <sys/types.h>
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
@@ -83,13 +84,16 @@ void AcceptMode(Server *s, int serverType)
 
     while ( (newSocket = accept(s->socketDes, (struct sockaddr *)&client, (socklen_t*)&c)) )
     {
+        // Crear Proceso que se dedique a esa solicitud
+        if (serverType == 2) {
+            CreateProcess(newSocket, s, serverType);
 
+        }
         // Crear Thread que se dedique a esa solicitud
-        if (serverType == 3)
+        else if (serverType == 3) {
             CreateThread(newSocket);
-
+        }
     }
-
 
     if (newSocket < 0)
     {
@@ -110,12 +114,66 @@ void RunServer(struct Server *s, int port)
     if (!BindSocket(s, "127.0.0.1", port)) { return; }           // Bindear el socket a la direccion y puerto
     if (!ListenSocket(s)) { return; }               // Establecer en modo de espera
     printf("\n#----------- Configuracion Finalizada -------------#\n\n");
-    AcceptMode(s, 3);                               // Aceptar solicitudes de cierto modo(revisar los modos en el metodo)
+    AcceptMode(s, 2);                               // Aceptar solicitudes de cierto modo(revisar los modos en el metodo)
 
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
+void CreateProcess(int newSocket, Server *s, int serverType)
+{
+    int *newSock;
 
+    printf("Conexion de Fork aceptada.\n");
+
+    newSock = malloc(1);
+    *newSock = newSocket;
+
+    /* Identificador del proceso creado */
+    pid_t idProceso;
+
+    /* Estado devuelto por el hijo */
+    int estadoHijo;
+
+    /* Se crea el proceso hijo. En algún sitio dentro del fork(), nuestro
+     * programa se duplica en dos procesos. Cada proceso obtendrá una salida
+     * distinta. */
+    idProceso = fork();
+
+    /* Si fork() devuelve -1, es que hay un error y no se ha podido crear el
+     * proceso hijo. */
+    if (idProceso == -1)
+    {
+        perror ("No se pudo crear el proceso");
+        exit (-1);
+    }
+
+    /* fork() devuelve 0 al proceso hijo.*/
+    if (idProceso == 0)
+    {
+        /* El hijo escribe su pid en pantalla y el valor de variable */
+        printf ("Proceso Hijo  : Mi pid es %d. El pid de mi padre es %d\n",
+                getpid(), getppid());
+
+        ThreadedServer((void *) newSock);
+
+        exit(33);
+    }
+
+    /* fork() devuelve un número positivo al padre. Este número es el id del
+     * hijo. */
+    if (idProceso > 0)
+    {
+
+        /* El proceso padre escribe su pid y el de su hijo */
+        printf ("Proceso Padre : Mi pid es %d. El pid de mi hijo es %d\n",
+                getpid(), idProceso);
+        close(newSocket);
+        AcceptMode(s, serverType);
+    }
+}
+
+
+/*--------------------------------------------------------------------------------------------------------------------*/
 void CreateThread(int newSocket)
 {
     int *newSock;
@@ -165,6 +223,7 @@ void *ThreadedServer(void *clientSock)
 
 
     // Liberar el puntero del socket
+    printf("Liberando socket");
     close(client);
 
     return 0;
