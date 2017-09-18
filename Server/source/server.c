@@ -229,11 +229,12 @@ void ProcessRequest(int client, char *fileName){
 
     // Abrir archivo por enviar
     FILE *fp = fopen(filePath, "rb");
-
+    bool fileNotFound = false;
     // Si el archivo no se encuentra, enviar HTML de "no encontrado"
     if (!fp) {
         perror("Archivo no encontrado");
         fp = fopen("../errors/notfound.html", "rb");
+        fileNotFound = true;
     }
 
     // Verificar que el archivo contenga informacion
@@ -248,7 +249,12 @@ void ProcessRequest(int client, char *fileName){
 
     // Construir encabezado
     WriteToClient(client, "HTTP/1.1 200 OK\r\n");
-    contentType = GetContentType(fileName);
+    if(fileNotFound){
+        contentType = "Content-Type: text/html\r\n";
+    }else{
+        contentType = GetContentType(fileName);
+    }
+
     WriteToClient(client, contentType);
     WriteToClient(client, "Connection: close\r\n\r\n");
 
