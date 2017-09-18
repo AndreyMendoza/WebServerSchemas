@@ -64,7 +64,7 @@ bool ListenSocket(struct Server *s)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-void AcceptMode(Server *s, int serverType)
+void AcceptMode(Server *s, int serverType, int nThreads)
 {
     /*-----------------------------------  Server Types ------------------------------------/*
      *
@@ -76,13 +76,13 @@ void AcceptMode(Server *s, int serverType)
      *--------------------------------------------------------------------------------------*/
 
     struct sockaddr_in client;
-    int c, newSocket;
+    int c, newClient;
 
 
     printf("Esperando nuevas solicitudes...\n");
     c = sizeof(struct sockaddr_in);
 
-    while ( (newSocket = accept(s->socketDes, (struct sockaddr *)&client, (socklen_t*)&c)) )
+    while ( (newClient = accept(s->socketDes, (struct sockaddr *)&client, (socklen_t*)&c)) )
     {
         // Crear Proceso que se dedique a esa solicitud
         if (serverType == 2) {
@@ -90,12 +90,25 @@ void AcceptMode(Server *s, int serverType)
 
         }
         // Crear Thread que se dedique a esa solicitud
-        else if (serverType == 3) {
-            CreateThread(newSocket);
+        if (serverType == 3)
+            CreateThread(newClient);
+
+        // Servidor modo PreThreaded
+        if (serverType == 4)
+        {
+            // Bloquear la lista para leerla
+            pthread_mutex_lock(&lock);
+
+            // Agregar cliente a la lista de clientes pendientes
+            add(clients, &newClient);
+
+            pthread_mutex_unlock(&lock);
         }
+
     }
 
-    if (newSocket < 0)
+
+    if (newClient < 0)
     {
         puts("Fallo en la conexion.");
 
@@ -104,17 +117,41 @@ void AcceptMode(Server *s, int serverType)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-void RunServer(struct Server *s, int port)
+void RunServer(struct Server *s, int port, int type, int nThreads)
 {
+    /*-----------------------------------  Server Types ------------------------------------/*
+     *
+     * 1 - FIFO: se atendenderan la solicitudes conforme van llegando.
+     * 2 - FORK: se crea un PROCESO para cada solicitud.
+     * 3 - THREAD: se crea un THREAD para cada solicitud.
+     * 4 - PRE-THREAD: a una solicitud se le ASIGNA un thread que esta creado previamente.
+     *
+     *--------------------------------------------------------------------------------------*/
+
     // Ejecuta un servidor y lo deja esperando solicitudes.
 
     printf("\n#------------- Inicializando Server -------------#\n\n");
 
-    if (!CreateSocket(s)) { return; }               // Crear el socket
-    if (!BindSocket(s, "127.0.0.1", port)) { return; }           // Bindear el socket a la direccion y puerto
-    if (!ListenSocket(s)) { return; }               // Establecer en modo de espera
+    // Crear el socket
+    if (!CreateSocket(s)) { return; }
+
+    // Bindear el socket a la direccion y puerto
+    if (!BindSocket(s, "127.0.0.1", port)) { return; }
+
+    // Establecer en modo de espera
+    if (!ListenSocket(s)) { return; }
+
     printf("\n#----------- Configuracion Finalizada -------------#\n\n");
-    AcceptMode(s, 2);                               // Aceptar solicitudes de cierto modo(revisar los modos en el metodo)
+
+    // Aceptar solicitudes de cierto modo(revisar los modos en el metodo)
+
+    // Se inicializan los threads necesarios
+    if (type == 4)
+    {
+        if(!InitThreadPool(nThreads))
+            return;
+    }
+    AcceptMode(s, type, nThreads);
 
 }
 
@@ -123,57 +160,89 @@ void CreateProcess(int newSocket, Server *s, int serverType)
 {
     int *newSock;
 
-    printf("Conexion de Fork aceptada.\n");
+bool InitThreadPool(int nThreads)
+{
+    int i;
+    printf("Iniciando conjunto de threads...");
 
-    newSock = malloc(1);
-    *newSock = newSocket;
+    clients = newList();
 
-    /* Identificador del proceso creado */
-    pid_t idProceso;
-
-    /* Estado devuelto por el hijo */
-    int estadoHijo;
-
-    /* Se crea el proceso hijo. En algún sitio dentro del fork(), nuestro
-     * programa se duplica en dos procesos. Cada proceso obtendrá una salida
-     * distinta. */
-    idProceso = fork();
-
-    /* Si fork() devuelve -1, es que hay un error y no se ha podido crear el
-     * proceso hijo. */
-    if (idProceso == -1)
+    if (pthread_mutex_init(&lock, NULL) != 0)
     {
-        perror ("No se pudo crear el proceso");
-        exit (-1);
+        printf("FAILED\n");
+        return false;
     }
 
-    /* fork() devuelve 0 al proceso hijo.*/
-    if (idProceso == 0)
+    for (i = 0; i < nThreads; i++)
     {
-        /* El hijo escribe su pid en pantalla y el valor de variable */
-        printf ("Proceso Hijo  : Mi pid es %d. El pid de mi padre es %d\n",
-                getpid(), getppid());
-
-        ThreadedServer((void *) newSock);
-
-        exit(33);
+        if (pthread_create(&threadID, NULL, PreThreadedServer, NULL) != 0)
+        {
+            printf("FAILED\n");
+            break;
+        }
     }
 
-    /* fork() devuelve un número positivo al padre. Este número es el id del
-     * hijo. */
-    if (idProceso > 0)
-    {
+    printf("OK\n");
+    return true;
+}
 
-        /* El proceso padre escribe su pid y el de su hijo */
-        printf ("Proceso Padre : Mi pid es %d. El pid de mi hijo es %d\n",
-                getpid(), idProceso);
-        close(newSocket);
-        AcceptMode(s, serverType);
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+void *PreThreadedServer(void *null)
+{
+    int client;
+    ssize_t readSize;
+    char *message, clientMessage[2000], *fileName;
+    pthread_t threadID = pthread_self();
+
+    // Indica que se liberaran los recursos al finalizar el procesos del thread
+    pthread_detach(threadID);
+
+
+    printf("Thread %ld creado!\n", (long) threadID);
+
+    // Bloquear la lista para leerla
+
+    while (1) {
+        pthread_mutex_lock(&lock);
+
+        if (peek(clients) != NULL)
+            client = *(int*)pop(clients);
+        else
+            client = NULL;
+
+        pthread_mutex_unlock(&lock);
+
+        if (client != NULL)
+        {
+            printf("Thread %ld procesando el cliente %d\n",(long)threadID, client);
+
+            memset(clientMessage, 0, 2000);
+            // Lectura de la solicitud
+            readSize = recv(client, clientMessage, 2000, 0);
+
+            // Archivo solicitado por el cliente
+            fileName = GetFileName(clientMessage);
+
+            ProcessRequest(client, fileName);
+
+            if (readSize == 0)
+            {
+                printf("Thread %ld liberado. El cliente se ha desconectado%d\n",(long)threadID, client);
+                fflush(stdout);
+            }
+            else if (readSize == -1)
+            {
+                perror("Error recibiendo mensaje del cliente.");
+            }
+            // Liberar el puntero del socket
+            close(client);
+        }
     }
 }
 
-
 /*--------------------------------------------------------------------------------------------------------------------*/
+
 void CreateThread(int newSocket)
 {
     int *newSock;
@@ -203,7 +272,7 @@ void *ThreadedServer(void *clientSock)
     char *message, clientMessage[2000];
     memset(clientMessage, 0, 2000);
 
-    // Lecutra de la solicitud
+    // Lectura de la solicitud
     readSize = recv(client, clientMessage, 2000, 0);
 
     // Archivo solicitado por el cliente
@@ -220,8 +289,6 @@ void *ThreadedServer(void *clientSock)
     {
         perror("Error recibiendo mensaje");
     }
-
-
     // Liberar el puntero del socket
     printf("Liberando socket");
     close(client);
