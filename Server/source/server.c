@@ -92,12 +92,12 @@ void AcceptMode(Server *s, int serverType, int nThreads)
         // Crear Proceso que se dedique a esa solicitud
         if (serverType == 2) {
             CreateProcess(newClient, s, serverType);
-
+        }
 
         // Crear Thread que se dedique a esa solicitud
-        if (serverType == 3)
+        if (serverType == 3) {
             CreateThread(newClient);
-
+        }
         // Servidor modo PreThreaded
         if (serverType == 4)
         {
