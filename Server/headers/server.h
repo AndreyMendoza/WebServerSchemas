@@ -31,6 +31,7 @@ void AcceptMode(Server *s, int serverType, int nThreads);
 void RunServer(Server *s, int port, int type, int nThreads);
 
 void *ThreadedServer(void *clientSock);
+void CreateProcess(int newSocket, Server *s, int serverType);
 void CreateThread(int newSocket);
 char *GetFileName(char *header);
 bool SendAll(int socket, void *buffer, size_t length);

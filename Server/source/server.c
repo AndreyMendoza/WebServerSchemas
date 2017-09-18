@@ -1,5 +1,6 @@
 #include "../headers/server.h"
-
+#include <wait.h>
+#include <sys/types.h>
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
@@ -88,6 +89,9 @@ void AcceptMode(Server *s, int serverType, int nThreads)
         {
             FIFOServer(newClient);
         }
+        // Crear Proceso que se dedique a esa solicitud
+        if (serverType == 2) {
+            CreateProcess(newSocket, s, serverType);
 
 
         // Crear Thread que se dedique a esa solicitud
@@ -185,6 +189,9 @@ void FIFOServer(int client)
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
+void CreateProcess(int newSocket, Server *s, int serverType)
+{
+    int *newSock;
 
 bool InitThreadPool(int nThreads)
 {
@@ -316,6 +323,7 @@ void *ThreadedServer(void *clientSock)
         perror("Error recibiendo mensaje");
     }
     // Liberar el puntero del socket
+    printf("Liberando socket");
     close(client);
 
     return 0;
