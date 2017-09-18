@@ -146,7 +146,7 @@ void RunServer(struct Server *s, int port, int type, int nThreads)
         if(!InitThreadPool(nThreads))
             return;
     }
-    AcceptMode(s, 4, nThreads);
+    AcceptMode(s, type, nThreads);
 
 }
 

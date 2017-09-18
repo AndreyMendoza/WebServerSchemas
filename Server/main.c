@@ -5,5 +5,5 @@ int main() {
 
 //    RunServers();
     Server *s = {NULL, NULL};
-    RunServer(&s, 5050, 4, 1);
+    RunServer(&s, 5050, 3, 1);
 }
