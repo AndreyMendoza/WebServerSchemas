@@ -3,7 +3,6 @@
 
 int main() {
 
-//    RunServers();
     Server *s = {NULL, NULL};
     RunServer(&s, 5050, 1, 1);
 }

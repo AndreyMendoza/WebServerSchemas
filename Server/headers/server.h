@@ -12,11 +12,12 @@
 #include <stdlib.h>
 #include <sys/syscall.h>
 #include "../headers/List.h"
+#include "../headers/structs.h"
 
-typedef struct Server {
+/*typedef struct Server {
     int socketDes;
     struct sockaddr_in server;
-}Server;
+}Server;*/
 
 
 pthread_t threadID;
