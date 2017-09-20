@@ -8,10 +8,12 @@ int main() {
     char * storage = argv[2];
     char * files = argv[3];
      */
-    int port = 5050;
+    /*int port = 5050;
     char * storage = "/home/armando/escritorio/";
-    char * files = "test1.html,test2.txt";
+    char files[2000] = "test1.html,test2.txt";
 
+    //char * filesAux = malloc(strlen(files));
+    //strcpy(filesAux,files);
 
     List * tokens = newList();
     char * current_token = strtok(files, ",");
@@ -19,6 +21,9 @@ int main() {
         add(tokens, current_token);
         current_token = strtok(NULL, ",");
     }
+
+    //add(tokens,"test1.html");
+    //add(tokens,"test2.txt");
 
 
     List * threads = newList();
@@ -50,7 +55,8 @@ int main() {
         thread_node = thread_node->next;
     }
 
-    printf("Fin de la consulta de archivos\n");
-
+    printf("Fin de la consulta de archivos\n");*/
+    Server s = {NULL, NULL, 5050, "/home/armando/Escritorio", "test1.html"};
+    RunClient(&s);
     return 0;
 }
