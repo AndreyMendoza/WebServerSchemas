@@ -45,10 +45,4 @@ printf.h
 /home/armando/Documentos/S.O/WebServerSchemas/Client/source/client.c
 ../headers/client.h
 /home/armando/Documentos/S.O/WebServerSchemas/Client/headers/client.h
-../headers/List.h
-/home/armando/Documentos/S.O/WebServerSchemas/Client/headers/List.h
-pwd.h
--
-sys/stat.h
--
 
