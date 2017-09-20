@@ -14,6 +14,9 @@
 typedef struct Server {
     int socketDes;
     struct sockaddr_in server;
+    int port;
+    char storage;
+    char fileName;
 }Server;
 
 bool CreateSocket(Server *s);

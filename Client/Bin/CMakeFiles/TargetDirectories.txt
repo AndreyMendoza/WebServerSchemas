@@ -1,0 +1,3 @@
+/home/armando/Documentos/S.O/WebServerSchemas/Client/Bin/CMakeFiles/rebuild_cache.dir
+/home/armando/Documentos/S.O/WebServerSchemas/Client/Bin/CMakeFiles/edit_cache.dir
+/home/armando/Documentos/S.O/WebServerSchemas/Client/Bin/CMakeFiles/Client.dir

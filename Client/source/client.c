@@ -27,7 +27,7 @@ bool Connect(Server *s)
     //s->server.sin_addr.s_addr = inet_addr("74.125.141.104");
     //s->server.sin_port = htons( 80 );
     s->server.sin_addr.s_addr = inet_addr("127.0.0.1");
-    s->server.sin_port = htons(5050);
+    s->server.sin_port = htons(s->port);
     if (connect(s->socketDes, (struct sockaddr *)&s->server, sizeof(s->server)) < 0)
     {
         puts("FAILED\n");
@@ -64,11 +64,12 @@ bool ReceiveData(Server *s, char *messageReply)
     printf("Recibiendo respuesta del servidor...");
 
     int size_recv , total_size= 0;
-    char * buffer[8000] = {0};
-    memset(buffer,0,8000);
-    bool deleteHeader = true;
-
-    FILE * file2 = fopen("/home/armando/Escritorio/testArmando.txt", "w");
+    //char * buffer[8000] = {0};
+    //memset(buffer,0,8000);
+    //bool deleteHeader = true;
+    char * fullPath = strcat(s->storage,s->fileName);
+    //FILE * file2 = fopen("/home/armando/Escritorio/testArmando.html", "w");
+    FILE * file2 = fopen(fullPath, "w");
 
     //loop para recibir los chunks de datos del servidor
     while(1)
@@ -83,7 +84,7 @@ bool ReceiveData(Server *s, char *messageReply)
             total_size += size_recv;
             //printf("%s" , serverReply);
 
-            strcat(buffer,serverReply);
+            //strcat(buffer,serverReply);
 
             fprintf(file2,serverReply);
         }
@@ -92,7 +93,7 @@ bool ReceiveData(Server *s, char *messageReply)
     fclose(file2);
 
     printf("Respuesta recibida:\n");
-    puts(buffer);
+    //puts(buffer);
     return true;
 }
 
@@ -102,7 +103,12 @@ bool ReceiveData(Server *s, char *messageReply)
 
 void RunClient(Server *s)
 {
-    char *message = "GET /test4.jpg HTTP/1.1\r\n\r\n";
+    //char *message = "GET /test1.html HTTP/1.1\r\n\r\n";
+    char *message[100];
+    memset(message,0,100);
+    strcpy(message,"GET /");
+    strcat(message,s->fileName);
+    strcat(message, " HTTP/1.1\r\n\r\n");
     char *reply = "";
     printf("\n#------------- Inicializando Cliente -------------#\n\n");
 

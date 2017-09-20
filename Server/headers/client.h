@@ -14,10 +14,10 @@
 
 
 bool CreateSocket(Server *s);
-bool Connect(Server *s);
+bool Connect(Server *s, int port);
 bool SendData(Server *s, char *message);
 bool ReceiveData(Server *s, char *message);
-void RunClient(Server *s);
+void RunClient(Server *s, char * argv[]);
 
 int RunClients(void);
 char* getHostByName(char *hostname);
