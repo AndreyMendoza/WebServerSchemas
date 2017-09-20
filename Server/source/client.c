@@ -7,10 +7,10 @@ bool Connect(Server *s)
 {
     printf("Connectandose al servidor...");
 
-    // Preparar el sockaddr_en la structura
+    // Preparar el sockaddr_en la estructura
     s->server.sin_family = AF_INET;
     s->server.sin_addr.s_addr = inet_addr("74.125.141.104");
-    s->server.sin_port = htons( 80 );
+    s->server.sin_port = htons(80);
 
     if (connect(s->socketDes, (struct sockaddr *)&s->server, sizeof(s->server)) < 0)
     {
@@ -98,3 +98,6 @@ char* getHostByName(char* hostname)
 
     return hostname;
 }
+
+
+

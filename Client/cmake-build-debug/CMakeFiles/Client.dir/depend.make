@@ -7,6 +7,7 @@ CMakeFiles/Client.dir/main.c.o: ../main.c
 CMakeFiles/Client.dir/source/List.c.o: ../headers/List.h
 CMakeFiles/Client.dir/source/List.c.o: ../source/List.c
 
+CMakeFiles/Client.dir/source/client.c.o: ../headers/List.h
 CMakeFiles/Client.dir/source/client.c.o: ../headers/client.h
 CMakeFiles/Client.dir/source/client.c.o: ../source/client.c
 

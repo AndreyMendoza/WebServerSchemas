@@ -90,16 +90,16 @@ void AcceptMode(Server *s, int serverType, int nThreads)
             FIFOServer(newClient);
         }
         // Crear Proceso que se dedique a esa solicitud
-        if (serverType == 2) {
+        else if (serverType == 2) {
             CreateProcess(newClient, s, serverType);
         }
 
         // Crear Thread que se dedique a esa solicitud
-        if (serverType == 3) {
+        else if (serverType == 3) {
             CreateThread(newClient);
         }
         // Servidor modo PreThreaded
-        if (serverType == 4)
+        else if (serverType == 4)
         {
             // Bloquear la lista para leerla
             pthread_mutex_lock(&lock);
@@ -168,7 +168,7 @@ void FIFOServer(int client)
     memset(clientMessage, 0, 2000);
     // Lectura de la solicitud
     readSize = recv(client, clientMessage, 2000, 0);
-
+    printf(clientMessage);
     // Archivo solicitado por el cliente
     fileName = GetFileName(clientMessage);
 

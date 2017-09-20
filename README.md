@@ -17,3 +17,6 @@ Install make and Cmake(>= V.8)
 Execution:
 	make
 	./server type port NumThreads
+
+Parar la ejecución desde consola *liberando los recursos*:
+	Ctrl+C 
