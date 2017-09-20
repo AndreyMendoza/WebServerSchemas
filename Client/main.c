@@ -11,7 +11,6 @@ int main() {
     int port = 5050;
     char * storage = "/home/armando/escritorio/";
     char * files = "test1.html,test2.txt";
-    //Server s = {NULL, NULL,5050,"",""};
 
 
     List * tokens = newList();
