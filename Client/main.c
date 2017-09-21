@@ -8,12 +8,9 @@ int main() {
     char * storage = argv[2];
     char * files = argv[3];
      */
-    /*int port = 5050;
+    int port = 5050;
     char * storage = "/home/armando/escritorio/";
     char files[2000] = "test1.html,test2.txt";
-
-    //char * filesAux = malloc(strlen(files));
-    //strcpy(filesAux,files);
 
     List * tokens = newList();
     char * current_token = strtok(files, ",");
@@ -22,8 +19,6 @@ int main() {
         current_token = strtok(NULL, ",");
     }
 
-    //add(tokens,"test1.html");
-    //add(tokens,"test2.txt");
 
 
     List * threads = newList();
@@ -33,7 +28,7 @@ int main() {
     while(file_node != 0){
 
         pthread_t request_thread;
-        Server s = {NULL, NULL, port, storage, file_node->data};
+        Server s;// = {NULL, NULL, port, storage, file_node->data};
         s.port = port;
         s.storage = storage;
         s.fileName = file_node->data;
@@ -55,8 +50,8 @@ int main() {
         thread_node = thread_node->next;
     }
 
-    printf("Fin de la consulta de archivos\n");*/
-    Server s = {NULL, NULL, 5050, "/home/armando/Escritorio", "test1.html"};
-    RunClient(&s);
+    printf("Fin de la consulta de archivos\n");
+    //Server s = {NULL, NULL, 5050, "/home/armando/Escritorio", "test1.html"};
+    //RunClient(&s);
     return 0;
 }

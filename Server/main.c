@@ -9,7 +9,6 @@ int main(int argc, char *argv[]) {
     //Declaracion del servidor a utilizar
     Server *server = {NULL, NULL};
 
-
     //Se determina el tipo de ejecucion
     /* fi = FIFO
      * fo = Fork

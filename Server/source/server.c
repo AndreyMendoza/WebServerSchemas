@@ -423,7 +423,7 @@ char *GetContentType(char *fileName)
 
 void ProcessRequest(int client, char *fileName){
 
-    long fsize;
+    size_t fsize;
     char *path, *filePath, *msg, *contentType;
 
     // Formando ruta relativa del archivo por enviar
@@ -444,7 +444,7 @@ void ProcessRequest(int client, char *fileName){
 
     // Verificar que el archivo contenga informacion
     fseek(fp, 0, SEEK_END);
-    fsize = ftell(fp);
+    fsize = (size_t) ftell(fp);
     rewind(fp);
 
     // Lectura del archivo
@@ -461,7 +461,12 @@ void ProcessRequest(int client, char *fileName){
     }
 
     WriteToClient(client, contentType);
-    WriteToClient(client, "Connection: close\r\n\r\n");
+    char largo[256];
+    sprintf(largo,"Content-Length: %zu \r\n\r\n",fsize);
+
+    //strcpy(largo,"Content-Length: ");
+    //strcat(largo,(fsize));
+    WriteToClient(client, largo);
 
     // Envio del archivo al cliente
     SendAll(client, msg, fsize);
