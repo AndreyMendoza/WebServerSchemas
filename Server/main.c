@@ -2,7 +2,7 @@
 #include "headers/client.h"
 
 int main(int argc, char *argv[]) {
-
+    //./Server fi 5050
     //Se toma el modo de ejecucion
     char * ExecType = argv[1];
 

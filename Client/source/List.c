@@ -43,6 +43,26 @@ void add(List *l, void *data)
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
+void addAux(List *l, void *data)
+{
+    // Agrega un nodo al final de la lista
+    Node * element = l->head;
+    while(element != NULL){
+        if(strcmp(element->data, data) == 0){
+            return;
+        }
+
+        element = element->next;
+    }
+
+    add(l,data);
+
+}
+
+
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
 
 void push(List *l, void *data)
 {

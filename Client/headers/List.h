@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+
 
 typedef struct Node {
     struct Node *next, *prev;
@@ -21,6 +23,7 @@ typedef struct List {
 Node *newNode(void *);                                              // Crea un nodo
 List *newList(void);                                                // Crea una lista
 void add(List *list, void *data);                                   // Agrega un nodo al final de la lista
+void addAux(List *l, void *data);
 void push(List *list, void *data);                                  // Agrega un noto al inicio de la lista
 void *peek(List *list);                                             // Retorna la informacion de la cabeza de la lista
 void *pop(List *list);                                              // Elimina el ultimo elemento de la lista

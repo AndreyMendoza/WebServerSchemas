@@ -1,21 +1,21 @@
 #include "headers/client.h"
 #include "headers/List.h"
 
-//int main(int argc, char* argv[]) {
-int main() {
+int main(int argc, char* argv[]) {
+    //./Client 5050 /home/armando/Escritorio/ test1.html,test2.txt,estadio.jpg,satelite.jpg,test3.png
 
-    /*int port = atoi(argv[1]);
+    int port = atoi(argv[1]);
     char * storage = argv[2];
     char * files = argv[3];
-     */
-    int port = 5050;
+
+    /*int port = 5050;
     char * storage = "/home/armando/Escritorio/";
-    char files[2000] = "test1.html,test2.txt,estadio.jpg,satelite.jpg,test3.png";
+    char files[2000] = "test1.html,test2.txt,estadio.jpg,satelite.jpg,test3.png";*/
 
     List * tokens = newList();
     char * current_token = strtok(files, ",");
     while(current_token){
-        add(tokens, current_token);
+        addAux(tokens, current_token);
         current_token = strtok(NULL, ",");
     }
 
