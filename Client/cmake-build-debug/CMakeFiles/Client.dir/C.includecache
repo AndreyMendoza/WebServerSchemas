@@ -6,13 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/home/armando/Documentos/S.O/WebServerSchemas/Client/headers/List.h
+/home/mackygero/Documents/WebServerSchemas/Client/headers/List.h
 stdlib.h
 -
 stdio.h
 -
+string.h
+-
 
-/home/armando/Documentos/S.O/WebServerSchemas/Client/headers/client.h
+/home/mackygero/Documents/WebServerSchemas/Client/headers/client.h
 sys/socket.h
 -
 stdio.h
@@ -32,21 +34,21 @@ pthread.h
 stdlib.h
 -
 
-/home/armando/Documentos/S.O/WebServerSchemas/Client/main.c
+/home/mackygero/Documents/WebServerSchemas/Client/main.c
 headers/client.h
-/home/armando/Documentos/S.O/WebServerSchemas/Client/headers/client.h
+/home/mackygero/Documents/WebServerSchemas/Client/headers/client.h
 headers/List.h
-/home/armando/Documentos/S.O/WebServerSchemas/Client/headers/List.h
+/home/mackygero/Documents/WebServerSchemas/Client/headers/List.h
 
-/home/armando/Documentos/S.O/WebServerSchemas/Client/source/List.c
+/home/mackygero/Documents/WebServerSchemas/Client/source/List.c
 printf.h
 -
 ../headers/List.h
-/home/armando/Documentos/S.O/WebServerSchemas/Client/headers/List.h
+/home/mackygero/Documents/WebServerSchemas/Client/headers/List.h
 
-/home/armando/Documentos/S.O/WebServerSchemas/Client/source/client.c
+/home/mackygero/Documents/WebServerSchemas/Client/source/client.c
 sys/stat.h
 -
 ../headers/client.h
-/home/armando/Documentos/S.O/WebServerSchemas/Client/headers/client.h
+/home/mackygero/Documents/WebServerSchemas/Client/headers/client.h
 

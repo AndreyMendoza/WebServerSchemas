@@ -25,11 +25,8 @@ bool Connect(Server *s)
 
     // Preparar el sockaddr_en la structura
     s->server.sin_family = AF_INET;
-    //s->server.sin_addr.s_addr = inet_addr("74.125.141.104");
-    //s->server.sin_port = htons( 80 );
     s->server.sin_addr.s_addr = inet_addr("127.0.0.1");
     s->server.sin_port = htons(s->port);
-    //s->server.sin_port = htons(5050);
     if (connect(s->socketDes, (struct sockaddr *)&s->server, sizeof(s->server)) < 0)
     {
         puts("FAILED\n");
@@ -65,20 +62,10 @@ bool ReceiveData(Server *s, char *messageReply)
     char serverReply[2000];
     printf("Recibiendo respuesta del servidor...");
 
-
-    int size_recv , total_size= 0;
-    //char * buffer[8000] = {0};
-    //memset(buffer,0,8000);
-    bool deleteHeader = true;
     char fullPath [256];
     memset(fullPath,0,256);
     strcpy(fullPath, s->storage);
     strcat(fullPath, s->fileName);
-
-    //FILE * file2 = fopen("/home/armando/Escritorio/estadio.txt", "w");
-    //FILE * file2 = fopen(fullPath, "w");
-    //loop para recibir los chunks de datos del servidor
-
     int tmp_file_fd = get_temporal_file(s->socketDes, fullPath);
 
     memset(serverReply,0,2000);
@@ -87,7 +74,6 @@ bool ReceiveData(Server *s, char *messageReply)
         printf("Error al obtener la respuesta a la solicitud\n");
         exit(EXIT_FAILURE);
     }
-
 
     // Obtenemos el tamaño total del contenido sin contar el encabezado http
     // y colocamos el puntero donde debe empezar a leer el contenido
@@ -165,9 +151,6 @@ void copy_content(int from_fd, int to_fd){
 
 }
 
-
-
-
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 void* RunClient(void * argv)
@@ -175,21 +158,21 @@ void* RunClient(void * argv)
     Server * s =  argv;
 
     char *message = malloc(100);
+    char *reply = "";
     memset(message,0,100);
     strcpy(message,"GET /");
     strcat(message,s->fileName);
     strcat(message, " HTTP/1.1\r\n\r\n");
-
-    //char *message = "GET /satelite.jpg HTTP/1.1\r\n\r\n";
     pthread_t threadID = pthread_self();
+
     // Indica que se liberaran los recursos al finalizar el procesos del thread
     //pthread_detach(threadID);
-    printf("Thread %ld creado!\t, peticion %s", (long) threadID, message);
+    printf("Thread %ld creado!.", (long) threadID);
 
-    char *reply = "";
-    printf("\n#------------- Inicializando Cliente -------------#\n\n");
 
-    if (!CreateSocket(s)) { exit(-10); }               // Crear el socket
+
+    if (!CreateSocket(s)) { exit(-10); }
+    printf(" Cliente %d solicitando el arhivo %s\n", s->socketDes, message);
     if (!Connect(s)) { exit(-20); }
     if (!SendData(s, message)) { exit(-30); };
     if (!ReceiveData(s, reply)) { exit(-40); };
@@ -199,27 +182,3 @@ void* RunClient(void * argv)
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-
-char* getHostByName(char* hostname)
-{
-
-    char ip[100];
-    struct hostent *he;
-    struct in_addr **addr_list;
-    int i;
-
-    if ((he = gethostbyname(hostname)) == NULL)
-    {
-        herror("gethostbyname");
-        return NULL;
-    }
-
-    for (i = 0; addr_list[i] != NULL; i++)
-    {
-        strcpy(ip, inet_ntoa(*addr_list[i]));
-    }
-
-    printf("%s resolved to : %s", hostname, ip);
-
-    return hostname;
-}

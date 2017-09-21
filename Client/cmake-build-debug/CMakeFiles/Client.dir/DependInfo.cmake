@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/armando/Documentos/S.O/WebServerSchemas/Client/main.c" "/home/armando/Documentos/S.O/WebServerSchemas/Client/cmake-build-debug/CMakeFiles/Client.dir/main.c.o"
-  "/home/armando/Documentos/S.O/WebServerSchemas/Client/source/List.c" "/home/armando/Documentos/S.O/WebServerSchemas/Client/cmake-build-debug/CMakeFiles/Client.dir/source/List.c.o"
-  "/home/armando/Documentos/S.O/WebServerSchemas/Client/source/client.c" "/home/armando/Documentos/S.O/WebServerSchemas/Client/cmake-build-debug/CMakeFiles/Client.dir/source/client.c.o"
+  "/home/mackygero/Documents/WebServerSchemas/Client/main.c" "/home/mackygero/Documents/WebServerSchemas/Client/cmake-build-debug/CMakeFiles/Client.dir/main.c.o"
+  "/home/mackygero/Documents/WebServerSchemas/Client/source/List.c" "/home/mackygero/Documents/WebServerSchemas/Client/cmake-build-debug/CMakeFiles/Client.dir/source/List.c.o"
+  "/home/mackygero/Documents/WebServerSchemas/Client/source/client.c" "/home/mackygero/Documents/WebServerSchemas/Client/cmake-build-debug/CMakeFiles/Client.dir/source/client.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
