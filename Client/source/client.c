@@ -71,6 +71,7 @@ bool ReceiveData(Server *s, char *messageReply)
     //memset(buffer,0,8000);
     bool deleteHeader = true;
     char fullPath [256];
+    memset(fullPath,0,256);
     strcpy(fullPath, s->storage);
     strcat(fullPath, s->fileName);
 
@@ -144,6 +145,7 @@ int get_temporal_file(int from_fd, char * original_file_name){
 char * get_temporal_filename(char *filepath){
 
     char * tmp_path = malloc(FILENAME_MAX);
+    memset(tmp_path,0,FILENAME_MAX);
     strcat(tmp_path, filepath);
     strcat(tmp_path, ".tmp-XXXXXX");
     return tmp_path;
@@ -168,11 +170,11 @@ void copy_content(int from_fd, int to_fd){
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-void RunClient(void *argv)
+void* RunClient(void * argv)
 {
-    Server * s = (Server *) argv;
+    Server * s =  argv;
 
-    char message[100];
+    char *message = malloc(100);
     memset(message,0,100);
     strcpy(message,"GET /");
     strcat(message,s->fileName);
@@ -181,16 +183,16 @@ void RunClient(void *argv)
     //char *message = "GET /satelite.jpg HTTP/1.1\r\n\r\n";
     pthread_t threadID = pthread_self();
     // Indica que se liberaran los recursos al finalizar el procesos del thread
-    pthread_detach(threadID);
-    printf("Thread %ld creado!\t, peticion %s", (long) threadID,message);
+    //pthread_detach(threadID);
+    printf("Thread %ld creado!\t, peticion %s", (long) threadID, message);
 
     char *reply = "";
     printf("\n#------------- Inicializando Cliente -------------#\n\n");
 
-    if (!CreateSocket(s)) { return; }               // Crear el socket
-    if (!Connect(s)) { return; }
-    if (!SendData(s, message)) { return; };
-    if (!ReceiveData(s, reply)) { return; };
+    if (!CreateSocket(s)) { exit(-10); }               // Crear el socket
+    if (!Connect(s)) { exit(-20); }
+    if (!SendData(s, message)) { exit(-30); };
+    if (!ReceiveData(s, reply)) { exit(-40); };
     puts("Informacion recibida con extio!");
 
     close(s->socketDes);
