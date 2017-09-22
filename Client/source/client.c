@@ -41,16 +41,12 @@ bool Connect(Server *s)
 
 bool SendData(Server *s, char *message)
 {
-    // Enviar datos al servidor
-    printf("Enviando:\n\t");
-    puts(message);
-
     if (send(s->socketDes, message, strlen(message), 0) < 0)
     {
         puts("ERROR: No fue posible enviar los datos.");
         return false;
     }
-    puts("Datos enviados con EXITO!.\n");
+    puts("Peticion enviada con EXITO!.\n");
     return true;
 }
 
@@ -166,7 +162,6 @@ void* RunClient(void * argv)
     pthread_t threadID = pthread_self();
 
     // Indica que se liberaran los recursos al finalizar el procesos del thread
-    //pthread_detach(threadID);
     printf("Thread %ld creado!.", (long) threadID);
 
 

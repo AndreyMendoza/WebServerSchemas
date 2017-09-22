@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 
 
-set(SOURCE_FILES main.c headers/server.h source/server.c headers/List.h source/List.c headers/client.h source/client.c headers/structs.h)
+set(SOURCE_FILES main.c headers/server.h source/server.c headers/List.h source/List.c headers/structs.h)
 find_package( Threads REQUIRED )
 add_executable(Server ${SOURCE_FILES})
 target_link_libraries( Server Threads::Threads )

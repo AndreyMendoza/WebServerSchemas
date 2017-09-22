@@ -1,5 +1,4 @@
 #include "headers/server.h"
-#include "headers/client.h"
 
 int main(int argc, char *argv[]) {
     //./Server fi 5050
@@ -37,7 +36,7 @@ int main(int argc, char *argv[]) {
         printf("Num de Threads %d\n",numThreads);
     }
     else {
-        printf("Comando %s desconocido\n", ExecType);
+        printf("Tipo de ejecucion %s desconocida\n", ExecType);
         exit(-1);
     }
 
@@ -49,6 +48,5 @@ int main(int argc, char *argv[]) {
 
     RunServer(&server, port, type, numThreads);
 
-    //RunServer(&server, 5060, 2, 1);
     return (0);
 }

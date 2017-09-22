@@ -30,7 +30,4 @@ void copy_content(int from_fd, int to_fd);
 size_t extract_content_lenght(char * buffer);
 off_t get_fd_size(int file_fd);
 
-int RunClients(void);
-char* getHostByName(char *hostname);
-
 #endif //CLIENT_CLIENT_H

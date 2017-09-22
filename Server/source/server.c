@@ -1,6 +1,4 @@
 #include "../headers/server.h"
-#include <wait.h>
-#include <sys/types.h>
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
@@ -34,7 +32,6 @@ bool BindSocket(Server *s, char *ip, int port)
 
     // Preparar el sockaddr_en la structura
     s->server.sin_family = AF_INET;
-    //s->server.sin_addr.s_addr = INADDR_ANY;
     s->server.sin_addr = ipAddr;
     s->server.sin_port = htons( (uint16_t) port);
 
@@ -166,9 +163,10 @@ void FIFOServer(int client)
     ssize_t readSize;
     char *message, clientMessage[2000], *fileName;
     memset(clientMessage, 0, 2000);
+
     // Lectura de la solicitud
     readSize = recv(client, clientMessage, 2000, 0);
-    printf(clientMessage);
+
     // Archivo solicitado por el cliente
     fileName = GetFileName(clientMessage);
 
@@ -464,8 +462,6 @@ void ProcessRequest(int client, char *fileName){
     char largo[256];
     sprintf(largo,"Content-Length: %zu \r\n\r\n",fsize);
 
-    //strcpy(largo,"Content-Length: ");
-    //strcat(largo,(fsize));
     WriteToClient(client, largo);
 
     // Envio del archivo al cliente
